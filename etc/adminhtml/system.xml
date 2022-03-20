@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!-- 
+/**
+ * Cool Codders
+ *
+ * NOTICE OF LICENSE
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category CoolCodders Extension
+ * @package  CoolCodders_Base
+ * @author   Raju S <rajus@coolcodders.com>
+ * @license  OSL 3.0
+ * @link     http://www.coolcodders.com
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="coolcoddes" translate="label" sortOrder="200">
+            <label>Cool Codders</label>
+        </tab>
+        <section id="base" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>About Cool Codders</label>
+            <tab>tab</tab>
+            <resource>CoolCodders_Base::base</resource>
+            <group id="about" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Cool Codders</label>
+                <frontend_model>CoolCodders\Base\Block\System\Config\Info</frontend_model>
+                <!-- <field id="button" type="html" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Custom</label>
+                </field> -->
+            </group>
+        </section>
+    </system>
+</config>
