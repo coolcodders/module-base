@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="CoolCodders_Base::base" title="Cool Codders" translate="title" module="CoolCodders_Base" sortOrder="70" resource="CoolCodders_Base::base"/>
+        <add id="CoolCodders_Base::about" title="About Cool Codders" translate="title" module="CoolCodders_Base" sortOrder="500" parent="CoolCodders_Base::base" action="adminhtml/system_config/edit/section/coolextension" resource="CoolCodders_Base::about"/>
+    </menu>
+</config>
