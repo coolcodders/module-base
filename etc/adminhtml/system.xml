@@ -22,18 +22,15 @@
         <tab id="coolcoddes" translate="label" sortOrder="200">
             <label>Cool Codders</label>
         </tab>
-        <section id="base" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+        <!-- <section id="base" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
             <class>separator-top</class>
             <label>About Cool Codders</label>
-            <tab>tab</tab>
+            <tab>coolcoddes</tab>
             <resource>CoolCodders_Base::base</resource>
             <group id="about" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Cool Codders</label>
-                <frontend_model>CoolCodders\Base\Block\System\Config\Info</frontend_model>
-                <!-- <field id="button" type="html" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Custom</label>
-                </field> -->
+                <frontend_model>CoolCodders\Base\Block\Adminhtml\System\Config\Info</frontend_model>
             </group>
-        </section>
+        </section> -->
     </system>
 </config>

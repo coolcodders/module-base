@@ -8,7 +8,7 @@
  *
  * Do not edit or add to this file if you wish to upgrade this extension to newer
  * version in the future.
- * php version 7.0
+ * php version ^7.0
  *
  * @category Cool Cooders
  * @package  CoolCodders_Base
@@ -17,33 +17,49 @@
  * @link     https://www.coolcodders.com/
  */
 
-namespace CoolCodders\Base\Helper;
+namespace CoolCodders\Base\Model;
 
-use Magento\Framework\App\Helper\AbstractHelper;
-use Magento\Framework\App\Helper\Context;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 
-
-class Data extends AbstractHelper
+class Config
 {
     /**
      * @var string
      */
     const WEBSITE_URL = 'https://www.coolcodders.com';
 
-    protected $date;
+    /**
+     * @var ScopeConfigInterface
+     */
+    private $scopeConfig;
 
     /**
-     * Data constructor.
+     * @var EncryptorInterface
+     */
+    private $encryptor;
+
+    /**
+     * @var TimezonInterface
+     */
+    private $date;
+
+    /**
+     * Config Constructor.
      *
-     * @param Context $context
+     * @param ScopeConfigInterface $scopeConfig
+     * @param EncryptorInterface $encryptor
+     * @param TimezonInterface $date
      */
     public function __construct(
-        Context $context,
+        ScopeConfigInterface $scopeConfig,
+        EncryptorInterface $encryptor,
         TimezoneInterface $date
     ) {
-        parent::__construct($context);
+        $this->scopeConfig = $scopeConfig;
+        $this->encryptor = $encryptor;
         $this->date = $date;
     }
 

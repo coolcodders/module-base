@@ -18,14 +18,18 @@
 namespace CoolCodders\Base\Block\Adminhtml\System\Config;
 
 use Magento\Framework\DataObjectFactory;
+use Magento\Framework\Component\ComponentRegistrarInterface;
+use Magento\Framework\Filesystem\Directory\ReadFactory;
 use Magento\Framework\View\Element\Template;
+use CoolCodders\Base\Model\Config;
+use CoolCodders\Base\Model\ExtensionList;
 
 class Info extends Template
 {
     /**
-     * @var \CoolCodders\Base\Helper\Data
+     * @var \CoolCodders\Base\Model\Config
      */
-    protected $helper;
+    protected $config;
 
     /**
      * @var \CoolCodders\Base\Model\ExtensionList
@@ -45,23 +49,23 @@ class Info extends Template
     /**
      * Extensions constructor.
      *
-     * @param \CoolCodders\Base\Model\ExtensionList $extensionList
-     * @param \Magento\Framework\Component\ComponentRegistrarInterface $componentRegistrar
-     * @param \Magento\Framework\Filesystem\Directory\ReadFactory $readFactory
-     * @param \CoolCodders\Base\Helper\Data $helper
+     * @param ExtensionList $extensionList
+     * @param ComponentRegistrarInterface $componentRegistrar
+     * @param ReadFactory $readFactory
+     * @param Config $config
      * @param Template\Context $context
      * @param array $data
      */
     public function __construct(
-        \CoolCodders\Base\Model\ExtensionList $extensionList,
-        \CoolCodders\Base\Helper\Data $helper,
+        ExtensionList $extensionList,
+        Config $config,
         DataObjectFactory $dataObjectFactory,
         Template\Context $context,
         array $data = []
     ) {
         parent::__construct($context, $data);
         $this->extensionList     = $extensionList;
-        $this->helper            = $helper;
+        $this->config            = $config;
         $this->dataObjectFactory = $dataObjectFactory;
     }
 

@@ -17,50 +17,53 @@
  */
 namespace CoolCodders\Base\Model;
 
-use \Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\Filesystem;
+use Magento\Framework\Filesystem\Directory\ReadFactory;
+use Magento\Framework\Composer\ComposerInformation;
 
 class ExtensionList
 {
-    const VENDOR = 'MageWorx';
+    const VENDOR_NAME = 'CoolCodders';
 
     /**
-     * @var \Magento\Framework\Filesystem\Directory\ReadFactory
+     * @var ReadFactory
      */
-    protected $readFactory;
+    private $readFactory;
 
     /**
-     * @var \Magento\Framework\Filesystem\DirectoryList
+     * @var DirectoryList
      */
-    protected $dir;
+    private $dir;
 
     /**
      * @var array
      */
-    protected $packages;
+    private $extension;
 
     /**
-     * @var \Magento\Framework\Filesystem
+     * @var Filesystem
      */
-    protected $filesystem;
+    private $filesystem;
 
     /**
-     * @var \Magento\Framework\Composer\ComposerInformation
+     * @var ComposerInformation
      */
     private $composerInformation;
 
     /**
-     * MetaPackageList constructor.
+     * ExtensionList constructor.
      *
      * @param DirectoryList $dir
-     * @param \Magento\Framework\Filesystem $filesystem
-     * @param \Magento\Framework\Filesystem\Directory\ReadFactory $readFactory
-     * @param \Magento\Framework\Composer\ComposerInformation $composerInformation
+     * @param Filesystem $filesystem
+     * @param ReadFactory $readFactory
+     * @param ComposerInformation $composerInformation
      */
     public function __construct(
         DirectoryList $dir,
-        \Magento\Framework\Filesystem $filesystem,
-        \Magento\Framework\Filesystem\Directory\ReadFactory $readFactory,
-        \Magento\Framework\Composer\ComposerInformation $composerInformation
+        Filesystem $filesystem,
+        ReadFactory $readFactory,
+        ComposerInformation $composerInformation
     ) {
         $this->dir                 = $dir;
         $this->filesystem          = $filesystem;
@@ -69,100 +72,61 @@ class ExtensionList
     }
 
     /**
+     * Retrive the installed list of extension 
+     * 
      * @return array|null
      */
     public function getInstalledExtensionList()
     {
-        if ($this->packages === null) {
+        if ($this->extension === null) {
             try {
-                $this->packages = array_merge($this->readLocalCodePath(), $this->readVendorPath());
+                $this->extension = $this->retriveExtensions();
+                //array_merge($this->readLocalCodePath(), $this->readVendorPath());
             } catch (\Magento\Framework\Exception\FileSystemException $e) {
-                return $this->packages = [];
+                return $this->extension = [];
             }
         }
 
-        return $this->packages;
+        return $this->extension;
     }
 
-    /**
-     * @return array
-     */
-    public function getInstalledExtensionCodes()
+    private function retriveExtensions()
     {
-        $list = $this->getInstalledExtensionList();
+        $extensions = [];
 
-        return array_keys($list);
-    }
-
-
-    /**
-     * @param string $metaPackageName
-     * @return string
-     */
-    public function getInstalledVersion($metaPackageName)
-    {
-        $list = $this->getInstalledExtensionList();
-
-        if (isset($list[$metaPackageName]['version'])) {
-            return $list[$metaPackageName]['version'];
-        }
-
-        return '';
-    }
-
-    /**
-     * @return array
-     * @throws \Magento\Framework\Exception\FileSystemException
-     */
-    protected function readLocalCodePath()
-    {
-        $result = [];
-
+        /* retrive extension list from the app/code directory */
         $path = $this->dir->getPath(DirectoryList::APP) . DIRECTORY_SEPARATOR . 'code' .
-            DIRECTORY_SEPARATOR . self::VENDOR . DIRECTORY_SEPARATOR;
-
+            DIRECTORY_SEPARATOR . self::VENDOR_NAME . DIRECTORY_SEPARATOR;
         $directoryRead = $this->readFactory->create($path);
 
-        if (!$directoryRead->isDirectory($path)) {
-            return $result;
-        }
-
-        try {
-            $directories = $directoryRead->read();
-            foreach ($directories as $directory) {
-                if ($directoryRead->isDirectory($path . $directory) &&
-                    $directoryRead->isExist($path . $directory . '/' . 'composer.json')
-                ) {
-                    $composerJsonData = $directoryRead->readFile($directory . '/' . 'composer.json');
-                    $data             = json_decode($composerJsonData, true);
-                    if (isset($data['type']) && isset($data['name']) && $data['type'] == 'metapackage') {
-                        if (!isset($result[$data['name']])) {
-                            $result[$data['name']] = $data;
+        if ($directoryRead->isDirectory($path)) {
+            try {
+                $directories = $directoryRead->read();
+                foreach ($directories as $directory) {
+                    $directoryPath = $path . $directory . DIRECTORY_SEPARATOR;
+                    if ($directoryRead->isDirectory($directoryPath) &&
+                        $directoryRead->isExist($directoryPath . 'composer.json')
+                    ) {
+                        $composerJsonData = $directoryRead->readFile($directoryPath. 'composer.json');
+                        $data             = json_decode($composerJsonData, true);
+                        if (isset($data['type']) && isset($data['name'])) {
+                            if (!isset($result[$data['name']])) {
+                                $extensions[$data['name']] = $data;
+                            }
                         }
                     }
                 }
+            } catch (\Magento\Framework\Exception\FileSystemException $e) {
             }
-        } catch (\Magento\Framework\Exception\FileSystemException $e) {
-            return [];
         }
 
-        return $result;
-    }
-
-    /**
-     * @return array
-     */
-    protected function readVendorPath()
-    {
-        $result = [];
+        /* retrive installed extension list from vendor directory */
         $data   = $this->composerInformation->getInstalledMagentoPackages();
-
-        foreach ($data as $package) {
-            if (strpos($package['name'], strtolower(self::VENDOR)) === 0 && $package['type'] == 'metapackage') {
-                $result[$package['name']] = $package;
+        foreach ($data as $module) {
+            if (strpos($module['name'], strtolower(self::VENDOR_NAME)) === 0) {
+                $extensions[$module['name']] = $module;
             }
         }
-
-        return $result;
+        return $extensions;
     }
 }
