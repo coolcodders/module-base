@@ -54,6 +54,5 @@ class CoolHtmlSection extends \Magento\Config\Block\System\Config\Form\Fieldset
     public function render(AbstractElement $element)
     {
         return $this->layout->createBlock(Info::class)->toHtml();
-        //return $this->extensionBlock->toHtml();
     }
 }

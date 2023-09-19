@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!--  
+ /**
+ * Cool Codders
+ *
+ * NOTICE OF LICENSE
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ * php version 7.0
+ *
+ * @category Cool Cooders
+ * @package  CoolCodders_Base
+ * @author   Raju S <rajus@coolcodders.com>
+ * @license  OSL 3.0
+ * @link     https://www.coolcodders.com/
+ */ 
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\App\Action\AbstractAction">
+        <plugin name="add-extra-fields-to-customer-context" type="CoolCodders\Base\Plugin\CustomerContext" sortOrder="1"/>
+    </type>
+</config>

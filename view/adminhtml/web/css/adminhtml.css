@@ -4,7 +4,7 @@
 }
 .admin__menu #menu-coolcodders-base-base.level-0 > a:before {
     content: '';
-    content: url('../images/cool-logo-admin.svg');
+    content: url('../images/admin-menu-logo.svg');
     height: auto !important;
 }
 .admin__menu #menu-coolcodders-base-base.level-0 > a:hover
@@ -12,16 +12,25 @@
     opacity: 1;
 }
 
+.admin__menu #menu-coolcodders-base-base{
+    
+}
 .admin__menu #menu-coolcodders-base-base.level-0 > a span{
+    height: 0px;
     display: none;
 }
 
+.coolcodders-config-tab strong {
+    display: none;
+}
+.coolcodders-config-tab .title:before{
+    content: ' ';
+    content: url('../images/cool-logo-config.png');
+    display: inline-block;
+    height: 19px;
+}
 .config-nav-block.cool-config-tab strong{
     color: green;
 }
 .config-nav-block.cool-config-tab strong:before{
-    content: '';
-    background: url('../images/cool-logo-admin.svg') no-repeat !important;
-    background-size: 80px 25px;
-    height: 20px;
 }
