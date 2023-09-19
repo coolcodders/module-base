@@ -2,10 +2,10 @@
   "name": "coolcodders/module-base",
   "description": "Base module for Cool Codders Magento 2 extensions",
   "require": {
-    "php": "~5.6.0|~7.0.0|~7.1.3|~7.2.0|~7.3.0|~7.4.0|~8.0.0"
+    "php": ">=7.0"
   },
   "type": "magento2-module",
-  "version": "1.0.2",
+  "version": "1.0.0",
   "license": [
       "OSL-3.0",
       "AFL-3.0"
