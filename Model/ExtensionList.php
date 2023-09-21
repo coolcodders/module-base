@@ -122,11 +122,40 @@ class ExtensionList
 
         /* retrive installed extension list from vendor directory */
         $data   = $this->composerInformation->getInstalledMagentoPackages();
+        $vendorName = strtolower(self::VENDOR_NAME);
+        $path = $this->dir->getRoot(). DIRECTORY_SEPARATOR. 'vendor'. DIRECTORY_SEPARATOR. $vendorName . DIRECTORY_SEPARATOR;
         foreach ($data as $module) {
             if (strpos($module['name'], strtolower(self::VENDOR_NAME)) === 0) {
-                $extensions[$module['name']] = $module;
+                $extensions[$module['name']] = $this->getVendorModuleDetails($module, $path);
             }
         }
         return $extensions;
+    }
+
+    public function getVendorModuleDetails($vendorData, $path)
+    {
+        $directoryRead = $this->readFactory->create($path);
+
+        if ($directoryRead->isDirectory($path)) {
+            try {
+                $directories = $directoryRead->read();
+                foreach ($directories as $directory) {
+                    $directoryPath = $path . $directory . DIRECTORY_SEPARATOR;
+                    if ($directoryRead->isDirectory($directoryPath) &&
+                        $directoryRead->isExist($directoryPath . 'composer.json')
+                    ) {
+                        $composerJsonData = $directoryRead->readFile($directoryPath. 'composer.json');
+                        $data = json_decode($composerJsonData, true);
+                        if (isset($data['type']) && isset($data['name']) && $data['name'] == $vendorData["name"]) {
+                            $vendorData = $data;
+                        }
+                    }
+                }
+            } catch (\Magento\Framework\Exception\FileSystemException $e) {
+            }
+        } else {
+            $vendorData["description"] = '';
+        }
+        return $vendorData;
     }
 }
